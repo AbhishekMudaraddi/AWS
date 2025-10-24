@@ -44,7 +44,17 @@ DynamoDB is a fully managed, serverless NoSQL database for key-value and documen
 - BatchGet/BatchWrite: Bulk operations
 - Transactions: All-or-nothing writes across multiple items
 
-## Example: Create a Table (CLI)
+## AWS CLI: Step-by-Step
+
+1) Install and configure CLI
+- Install: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+- Configure credentials and default region:
+```bash
+aws configure
+# Provide AWS Access Key ID, Secret Access Key, default region (e.g., us-east-1), and output format
+```
+
+2) Create a DynamoDB table
 ```bash
 aws dynamodb create-table \
   --table-name DemoTable \
@@ -52,8 +62,13 @@ aws dynamodb create-table \
   --key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE \
   --billing-mode PAY_PER_REQUEST
 ```
+Verify the table:
+```bash
+aws dynamodb list-tables
+aws dynamodb describe-table --table-name DemoTable
+```
 
-Add a GSI (optional):
+3) (Optional) Add a Global Secondary Index (GSI)
 ```bash
 aws dynamodb update-table \
   --table-name DemoTable \
@@ -70,6 +85,36 @@ aws dynamodb update-table \
     }
   }'
 ```
+
+4) Write and read data
+Put an item:
+```bash
+aws dynamodb put-item \
+  --table-name DemoTable \
+  --item '{"PK":{"S":"USER#123"},"SK":{"S":"PROFILE#2024-10-01"},"name":{"S":"Abhishek"},"email":{"S":"user@example.com"}}'
+```
+Get an item:
+```bash
+aws dynamodb get-item \
+  --table-name DemoTable \
+  --key '{"PK":{"S":"USER#123"},"SK":{"S":"PROFILE#2024-10-01"}}'
+```
+Query items (by partition key with sort key prefix):
+```bash
+aws dynamodb query \
+  --table-name DemoTable \
+  --key-condition-expression "PK = :pk AND begins_with(SK, :sk)" \
+  --expression-attribute-values '{":pk":{"S":"USER#123"},":sk":{"S":"PROFILE#"}}'
+```
+
+5) Clean up (optional)
+```bash
+aws dynamodb delete-table --table-name DemoTable
+```
+
+Notes:
+- Use `--profile <name>` if you manage multiple AWS accounts
+- For DynamoDB Local, add `--endpoint-url http://localhost:8000` to each CLI command
 
 ## Example: Python (boto3)
 ```python
@@ -140,3 +185,5 @@ Point SDK to local:
 - DynamoDB developer guide: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Welcome.html
 - DynamoDB Local: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
 - AWS SDK for Python (boto3): https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+
+
