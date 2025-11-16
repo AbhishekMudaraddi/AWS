@@ -1,4 +1,4 @@
-git # 🎯 AWS IAM Best Practices
+# 🎯 AWS IAM Best Practices
 
 This document outlines essential best practices for implementing and managing AWS IAM effectively.
 
