@@ -30,6 +30,10 @@ AWS-1/
 ├── AWS_DynamoDB/                # NoSQL Database Service
 │   ├── README.md
 │   └── Flask-Dynamo-app/
+├── AWS_S3/                      # Simple Storage Service
+│   ├── README.md
+│   ├── BEST_PRACTICES.md
+│   └── examples/
 └── [More AWS Services...]
 ```
 
@@ -39,6 +43,7 @@ AWS-1/
 |---------|-------------|--------|---------------|
 | **IAM** | Identity and Access Management | ✅ Complete | [View Docs](./AWS_IAM/ReadME.md) |
 | **DynamoDB** | NoSQL Database Service | ✅ Complete | [View Docs](./AWS_DynamoDB/Readme.md) |
+| **S3** | Simple Storage Service | ✅ Complete | [View Docs](./AWS_S3/README.md) |
 | *More services coming soon...* | | | |
 
 ## 🚀 Getting Started
